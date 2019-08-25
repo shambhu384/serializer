@@ -1,0 +1,10 @@
+{
+    "require": {
+        "symfony/serializer": "^4.3"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "./src"
+        }
+    }
+}
