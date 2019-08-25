@@ -1,7 +1,8 @@
 {
     "require": {
        "symfony/serializer": "^4.3",
-        "fzaninotto/faker": "^1.8"
+        "fzaninotto/faker": "^1.8",
+        "doctrine/annotations": "^1.7"
     },
     "autoload": {
         "psr-4": {
