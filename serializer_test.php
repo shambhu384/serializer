@@ -3,6 +3,7 @@
 require 'vendor/autoload.php';
 
 use App\Model\Person;
+use App\Model\Photo;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Encoder\XmlEncoder;
 use Symfony\Component\Serializer\Normalizer\GetSetMethodNormalizer;
@@ -33,10 +34,24 @@ $encoders = [
    new JsonEncoder(),
 ];
 
-$person = new Person('1', 'scott', 'dev@dev.org', new DateTime('2014-02-21'));
+// let's faker libraray
+$faker = Faker\Factory::create();
 
-/* A circular reference has been detected when serializing the object of class "App\Model\Person" (configured limit: 1) */
-$person->addFriend(new Person('1', 'Shambhu', 'shambhu@dev.org', new DateTime('2014-02-23')));
+$person = new Person($faker->uuid, $faker->name, $faker->email, $faker->dateTime);
+$person->setPhoto(new Photo(640, 480, $faker->imageUrl));
+
+$friend1 =  new Person($faker->uuid, $faker->name, $faker->email, $faker->dateTime);
+$friend1->setPhoto(new Photo(640, 480, $faker->imageUrl));
+$person->addFriend($friend1);
+
+$friend2 =  new Person($faker->uuid, $faker->name, $faker->email, $faker->dateTime);
+$friend2->setPhoto(new Photo(640, 480, $faker->imageUrl));
+
+$friend3 =  new Person($faker->uuid, $faker->name, $faker->email, $faker->dateTime);
+$friend3->setPhoto(new Photo(640, 480, $faker->imageUrl));
+$friend3->addFriend($friend2);
+$person->addFriend($friend3);
+
 
 $serializer = new Serializer($normalizers, $encoders);
 $serialized = $serializer->serialize($person, 'json');

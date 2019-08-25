@@ -1,6 +1,7 @@
 {
     "require": {
-       "symfony/serializer": "^4.3"
+       "symfony/serializer": "^4.3",
+        "fzaninotto/faker": "^1.8"
     },
     "autoload": {
         "psr-4": {
