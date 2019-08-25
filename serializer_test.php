@@ -8,7 +8,9 @@ use Symfony\Component\Serializer\Encoder\XmlEncoder;
 use Symfony\Component\Serializer\Normalizer\GetSetMethodNormalizer;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
-
+use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
+use App\Serializer\PersonNormalizer;
+use App\Service\PhotoService;
 
 
 $defaultContext = [
@@ -19,8 +21,12 @@ $defaultContext = [
 ];
 
 
+$getSetMethodNormalizer = new GetSetMethodNormalizer(null, null, null, null, null, $defaultContext);
+
 $normalizers = [
-   new GetSetMethodNormalizer(null, null, null, null, null, $defaultContext),
+    new DateTimeNormalizer,
+    new PersonNormalizer($getSetMethodNormalizer, new PhotoService()),
+    $getSetMethodNormalizer
 ];
 $encoders = [
    new XmlEncoder(),
@@ -30,7 +36,6 @@ $encoders = [
 $person = new Person('1', 'scott', 'dev@dev.org', new DateTime('2014-02-21'));
 
 /* A circular reference has been detected when serializing the object of class "App\Model\Person" (configured limit: 1) */
-
 $person->addFriend(new Person('1', 'Shambhu', 'shambhu@dev.org', new DateTime('2014-02-23')));
 
 $serializer = new Serializer($normalizers, $encoders);
