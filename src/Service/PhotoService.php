@@ -16,6 +16,7 @@ class PhotoService
        if (null === $photo) {
            return 'default.png';
        }
+      echo "done";
        return $photo->getFilename();
    }
 }
